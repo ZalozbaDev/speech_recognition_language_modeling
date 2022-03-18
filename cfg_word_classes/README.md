@@ -58,3 +58,77 @@ Outputs:
 
 Evaluation:
 
+
+# Word class file hierarchies
+
+## Numbers
+
+Some files are shared with "Times"
+
+```mermaid
+  graph TD;
+    NUM1-9.txt-->NUM5-99.txt;
+    NUM5-99.txt-->NUM1-99.txt;
+    NUM5-99.txt-->NUM_0-9__05-99_.txt;
+    NUM5-99.txt-->NUM1-10pow6.txt;
+    NUM5-99.txt-->NUM1-10pow9.txt;
+    NUM5-99.txt-->NUM1-10pow12.txt;
+    NUM5-99.txt-->NUM1-10pow15.txt;
+    NUM1-99.txt-->NUM1-999.txt;
+    NUM1-999.txt-->NUM1-10pow6.txt;
+    NUM1-99.txt-->NUM1-10pow6.txt;
+    NUM1-10pow6.txt-->NUM1-10pow9.txt;
+    NUM1-10pow9.txt-->NUM1-10pow12.txt;
+    NUM1-10pow12.txt-->NUM1-10pow15.txt;
+    NUM_1-9_00.txt-->NUM1-999.txt;
+    NUM_1-9_00.txt-->NUM_0-9__05-99_.txt;
+    NUM_1-9_00.txt-->NUM1-10pow6.txt;
+    NUM_1-9_00.txt-->NUM1-10pow9.txt;
+    NUM_1-9_00.txt-->NUM1-10pow12.txt;
+    NUM_1-9_00.txt-->NUM1-10pow15.txt;
+```
+
+## Times
+
+Some files are shared with "Numbers"
+
+
+```mermaid
+  graph TD;
+    NUM1-9.txt-->NUM1-59.txt;
+    NUM1-9.txt-->NUM1-19.txt;
+    NUM1-9.txt-->CLOCKMODWE.txt;
+    NUM1-9.txt-->CLOCKMODW.txt;
+    NUM1-19.txt-->NUM0-23.txt;
+    NUM1-19.txt-->NUM1-20do.txt;
+    NUM1-19.txt-->CLOCKMODWE.txt;
+    NUM1-19.txt-->CLOCKMODW.txt;
+    NUM1-20do.txt-->CLOCKMODWE.txt;
+    NUM1-20do.txt-->CLOCKMODW.txt;
+    NUM1-5do.txt-->NUM1-10do.txt;
+    NUM1-5do.txt-->CLOCKMODWE.txt;
+    NUM1-5do.txt-->CLOCKMODW.txt;
+    NUM1-10do.txt-->CLOCKMODWE.txt;
+    NUM1-10do.txt-->CLOCKMODW.txt;
+    CLOCKMODWE.txt-->clock.txt;
+    CLOCKMODW.txt-->clock.txt;
+    NUM0-23hodzin.txt-->clock.txt;
+    NUM1-59.txt-->clock.txt;
+```
+
+## Dates
+
+```mermaid
+  graph TD;
+    weekdays.txt-->DATE.txt;
+    DateDat.txt-->DATE.txt;
+    DateNom.txt-->DATE.txt;
+    ORDmDat31.txt-->DateDat.txt;
+    ORDmDat1-29.txt-->DateDat.txt;
+    ORDmDat30.txt-->DateDat.txt;
+    ORDfDat1-31.txt-->DateDat.txt;
+    ORDf1-31.txt-->DateNom.txt;
+    ORDm1-29.txt-->DateNom.txt;
+    ORDm30.txt-->DateNom.txt;
+    ORDm31.txt-->DateNom.txt;
+```
