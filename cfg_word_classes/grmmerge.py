@@ -110,6 +110,8 @@ def maxstkgrm(grm): return max(abs(t.k) for t in grm.td)
 
 def mergesubgrms(grm,dn,depth=1,usestk=True):
     imps=[i for i in set(t.i for t in grm.td) if os.path.exists(os.path.join(dn,i+'.txt'))]
+    # purely for more deterministic execution    
+    imps.sort()
     for imp in imps:
         print(f'Merge {imp:15s} in {grm.name:15s} [Depth: {depth} Copies: {sum(t.i==imp for t in grm.td):2d}{"==>1" if usestk else ""}]')
         sgrm=loadgrm(os.path.join(dn,imp+'.txt'),sub=True)
@@ -178,6 +180,7 @@ else:
     print('Convert to openfst')
     cmd=[finddlp(),*grm2ofstarg(fin)]
     subprocess.run(cmd,check=True)
+    # save the intermediate file also for illustrational purposes
     subprocess.run(['cp',fout,fout+".save.txt"],check=True)
 
 grm=loadgrm(fout,sub=ofstin)

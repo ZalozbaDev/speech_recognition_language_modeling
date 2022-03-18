@@ -143,5 +143,11 @@ RUN /dLabPro/bin.release/recognizer -cfg recognizer.cfg /sig/0002HSB.flst
 # fetch converted grammar 
 ## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt.save.txt /output/
 
+# fetch extracted lexicon
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_lex.txt /output/
+
 # fetch all plots
 ## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp -r /plots /output/
+
+# fetch merged grammar 
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt /output/
