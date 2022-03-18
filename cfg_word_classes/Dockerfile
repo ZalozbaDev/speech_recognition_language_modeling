@@ -51,3 +51,27 @@ RUN cd openfst-1.8.2 && LIBS=-latomic ./configure --enable-far && make && make i
 RUN tar xvfz ngram-1.3.14.tar.gz
 RUN cd ngram-1.3.14 && LIBS=-latomic ./configure && make && make install
 
+############################################
+# Fetch pretrained acousic models
+############################################
+
+RUN git clone https://github.com/ZalozbaDev/speech_recognition_pretrained_models speech_recognition_pretrained_models
+RUN cd speech_recognition_pretrained_models && git checkout 7f59924e254283498c87e0f7e4638ef850b58571
+
+############################################
+# Convert and merge grammars
+############################################
+
+# collect all files for merging
+RUN mkdir -p grammars
+COPY inputs/grm/*                        grammars/
+COPY inputs/word_classes/dates/*         grammars/
+COPY inputs/word_classes/numbers_times/* grammars/
+
+# add tooling
+ADD grm2ofst.xtp /
+ADD grmmerge.py /
+
+RUN apt install -y python3
+
+RUN DLABPRO_HOME=/dLabPro/ UASR_HOME=/UASR/ python3 grmmerge.py grammars/smart_lamp_hsb_evl_fsg_num.txt
