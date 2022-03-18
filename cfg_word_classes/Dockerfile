@@ -48,3 +48,6 @@ RUN wget https://www.openfst.org/twiki/pub/GRM/NGramDownload/ngram-1.3.14.tar.gz
 RUN tar xvfz openfst-1.8.2.tar.gz
 RUN cd openfst-1.8.2 && LIBS=-latomic ./configure --enable-far && make && make install
 
+RUN tar xvfz ngram-1.3.14.tar.gz
+RUN cd ngram-1.3.14 && LIBS=-latomic ./configure && make && make install
+
