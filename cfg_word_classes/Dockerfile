@@ -84,12 +84,14 @@ COPY inputs/word_classes/dates/*         grammars/
 COPY inputs/word_classes/numbers_times/* grammars/
 
 # add tooling
-ADD grm2ofst.xtp /
-ADD grmmerge.py /
+COPY grm2ofst.xtp grammars/
+COPY grmmerge.py  grammars/
 
 RUN apt install -y python3
 
-RUN DLABPRO_HOME=/dLabPro/ UASR_HOME=/UASR/ python3 grmmerge.py grammars/smart_lamp_hsb_evl_fsg_num.txt
+# script will work correctly only when all grammars are in same directory
+# script expects path for the grammar (even if just "./") to work correctly
+RUN cd grammars && DLABPRO_HOME=/dLabPro/ UASR_HOME=/UASR/ python3 grmmerge.py ./smart_lamp_hsb_evl_fsg_num.txt
 
 ############################################
 # Plot grammars
