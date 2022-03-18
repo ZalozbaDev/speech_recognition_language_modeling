@@ -58,6 +58,19 @@ RUN cd ngram-1.3.14 && LIBS=-latomic ./configure && make && make install
 RUN git clone https://github.com/ZalozbaDev/speech_recognition_pretrained_models speech_recognition_pretrained_models
 RUN cd speech_recognition_pretrained_models && git checkout 7f59924e254283498c87e0f7e4638ef850b58571
 
+########################################################
+# Setup locale to properly support sorbian diacritics
+########################################################
+
+RUN apt-get install -y locales
+
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+
+ENV LC_ALL en_US.UTF-8 
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en     
+
 ############################################
 # Convert and merge grammars
 ############################################
@@ -77,6 +90,18 @@ ADD grmmerge.py /
 RUN apt install -y python3
 
 RUN DLABPRO_HOME=/dLabPro/ UASR_HOME=/UASR/ python3 grmmerge.py grammars/smart_lamp_hsb_evl_fsg_num.txt
+
+############################################
+# Plot grammars
+############################################
+
+RUN mkdir -p plots/
+
+ADD generate_plots.sh /
+
+RUN apt install -y graphviz
+
+RUN /generate_plots.sh
 
 ################################################################
 # Package grammar, lexicon and acoustic model for recognition 
@@ -116,3 +141,5 @@ RUN /dLabPro/bin.release/recognizer -cfg recognizer.cfg /sig/0002HSB.flst
 # fetch converted grammar 
 ## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt.save.txt /output/
 
+# fetch all plots
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp -r /plots /output/

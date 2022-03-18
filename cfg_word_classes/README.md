@@ -34,7 +34,8 @@ Tools:
     * see https://github.com/ZalozbaDev/UASR
 * dLabPro script "grm2ofst.xtp" for grammar conversion UASR to OpenFST
 * python script "grmmerge.py" which executes conversion and merging
-    
+* bash script "generate_plots.sh" to visualize all word class files as .pdf
+
 Running:
 
 * Build the container using the supplied "Dockerfile"
@@ -46,6 +47,7 @@ docker build -t speech_recognition_cfg_word_classes .
 
 Intermediates:
 
+* .pdf files that visualize all word classes
 * UASR grammar converted to OpenFST ("smart_lamp_hsb_evl_fsg_num.txt_ofst.txt.save.txt")
     * see "Dockerfile" on how to extract the files after successful container build
 
