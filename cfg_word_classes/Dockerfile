@@ -62,6 +62,8 @@ RUN cd speech_recognition_pretrained_models && git checkout 7f59924e254283498c87
 # Convert and merge grammars
 ############################################
 
+RUN mkdir -p output
+
 # collect all files for merging
 RUN mkdir -p grammars
 COPY inputs/grm/*                        grammars/
@@ -75,3 +77,30 @@ ADD grmmerge.py /
 RUN apt install -y python3
 
 RUN DLABPRO_HOME=/dLabPro/ UASR_HOME=/UASR/ python3 grmmerge.py grammars/smart_lamp_hsb_evl_fsg_num.txt
+
+################################################################
+# Package grammar, lexicon and acoustic model for recognition 
+################################################################
+
+RUN mkdir -p uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
+RUN cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt   uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
+RUN cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_lex.txt    uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
+
+RUN mkdir -p uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/model/
+RUN cp /speech_recognition_pretrained_models/2022_02_21/classes.txt      uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/model/
+RUN cp /speech_recognition_pretrained_models/2022_02_21/feainfo.object   uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/model/
+RUN cp /speech_recognition_pretrained_models/2022_02_21/3_7.hmm          uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/model/
+
+ADD inputs/cfg/package.cfg /
+
+RUN UASR_HOME=uasr /dLabPro/bin.release/dlabpro /UASR/scripts/dlabpro/tools/REC_PACKDATA.xtp rec package.cfg
+
+############################################
+# fetch intermediates and results
+############################################
+
+## mkdir -p output && rm -rf ./output/*
+
+# fetch converted grammar 
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt.save.txt /output/
+
