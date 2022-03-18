@@ -15,10 +15,14 @@ Inputs:
         * check directory inputs/word_classes/numbers_times 
 * existing Upper Sorbian acoustic model ("3_7.hmm"), statistics ("feainfo.object") and model configuration ("classes.txt") for evaluation
     * see https://github.com/ZalozbaDev/speech_recognition_pretrained_models
-* config file ("package.cfg")
+* recorded examples for evaluation
+    * check directory inputs/sig
+* config file ("package.cfg") for packaging data for command line recognizer
+    * check directory inputs/cfg
+* config file ("recognizer.cfg") for running command line recognizer
     * check directory inputs/cfg
 
-Configuration ("package.cfg"):
+Configuration ("package.cfg" and "recognizer.cfg"):
 
 * Some file names and paths can be adjusted if needed.
     

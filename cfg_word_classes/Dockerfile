@@ -96,6 +96,18 @@ ADD inputs/cfg/package.cfg /
 RUN UASR_HOME=uasr /dLabPro/bin.release/dlabpro /UASR/scripts/dlabpro/tools/REC_PACKDATA.xtp rec package.cfg
 
 ############################################
+# Evaluation of resulting grammar
+############################################
+
+# copy audio files
+RUN mkdir -p sig/
+COPY inputs/sig/*  sig/
+
+ADD inputs/cfg/recognizer.cfg /
+
+RUN /dLabPro/bin.release/recognizer -cfg recognizer.cfg /sig/0002HSB.flst
+
+############################################
 # fetch intermediates and results
 ############################################
 
