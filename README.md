@@ -12,6 +12,8 @@ An example of a statistical language model with word classes can be found here:
 
 * slm_word_classes
 
+Documentation which was used to generate these examples can be found in the "report" folder.
+
 ## Authors
 
 - Dr. Ivan Kraljevski (Fraunhofer Institute for Ceramic Technologies and Systems IKTS, Dresden, Germany)
