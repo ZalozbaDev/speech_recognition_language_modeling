@@ -161,6 +161,20 @@ ADD inputs/cfg/package.cfg /
 RUN UASR_HOME=uasr /dLabPro/bin.release/dlabpro /UASR/scripts/dlabpro/tools/REC_PACKDATA.xtp rec package.cfg
 
 ############################################
+# Evaluation of resulting grammar
+############################################
+
+# copy audio files
+RUN mkdir -p sig/
+COPY inputs/sig/*  sig/
+
+ADD inputs/cfg/recognizer.cfg /
+
+RUN rm -f recognizer_log.txt
+RUN /dLabPro/bin.release/recognizer -cfg recognizer.cfg /sig/list.flst 2>/dev/null | grep  'cmd:\|processing' | tee recognizer_log.txt
+
+
+############################################
 # fetch intermediates and results
 ############################################
 
