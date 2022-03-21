@@ -30,5 +30,13 @@ Outputs:
 Evaluation:
 
 
-# Word class file hierarchies
+# Word class file hierarchy
 
+## Numbers/Percentages
+
+```mermaid
+  graph TD;
+    NUM1-9.txt-->NUM5-99.txt;
+    NUM5-99.txt-->NUM1-99.txt;
+    NUM1-99.txt-->NUM1-100.txt;
+```
