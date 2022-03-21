@@ -116,8 +116,49 @@ RUN ngramshrink --method=relative_entropy --theta=1.0e-7 lm/hsb.mod lm/hsb.pru
 RUN ngramperplexity --OOV_symbol="<unk>" lm/hsb.mod lm/hsb.far
 RUN ngramperplexity --OOV_symbol="<unk>" lm/hsb.pru lm/hsb.far
 
+######################################################
+# Merge statistical language model and word classes
+######################################################
 
+RUN mkdir -p /merge
 
+# collect all word class files
+COPY inputs/word_classes/* merge/
+
+# python tool MUST be in same folder as all data files
+COPY tools/grmmerge.py merge/
+
+# SLM needs to be converted to be in proper format for merging
+# using the non-pruned SLM
+RUN fstprint lm/hsb.mod > merge/hsb_tmp.txt
+# replace PERCENT symbol with name of word class grammar file ("top level")
+RUN cd merge && cat hsb_tmp.txt | sed -e 's/<epsilon>/<eps>/g' | sed -e 's/{PERCENT}\(.*\){PERCENT}/NUM1-100\1<eps>/' > hsb.txt
+
+# finally run the merge itself
+RUN cd merge && python3 grmmerge.py -lmw 10 -ofstin hsb.txt
+
+################################################################
+# Package grammar, lexicon and acoustic model for recognition 
+################################################################
+
+# supply prebuilt lexicon (TBD should be generated!)
+RUN mkdir -p uasr-data/db-hsb-asr/grammatics/word_class_lm/lex/
+COPY inputs/lexicon/hsb.ulex uasr-data/db-hsb-asr/grammatics/word_class_lm/lex/
+
+RUN mkdir -p uasr-data/db-hsb-asr/grammatics/word_class_lm/lm/
+RUN cp /merge/hsb.txt_ofst.txt      uasr-data/db-hsb-asr/grammatics/word_class_lm/lm/
+# don't forget to copy the input and output symbol files!!! Packaging will not warn you if these are not found!
+RUN cp /merge/hsb.txt_ofst_is.txt   uasr-data/db-hsb-asr/grammatics/word_class_lm/lm/
+RUN cp /merge/hsb.txt_ofst_os.txt   uasr-data/db-hsb-asr/grammatics/word_class_lm/lm/
+
+RUN mkdir -p uasr-data/db-hsb-asr/grammatics/word_class_lm/model/
+RUN cp /speech_recognition_pretrained_models/2022_02_21/classes.txt      uasr-data/db-hsb-asr/grammatics/word_class_lm/model/
+RUN cp /speech_recognition_pretrained_models/2022_02_21/feainfo.object   uasr-data/db-hsb-asr/grammatics/word_class_lm/model/
+RUN cp /speech_recognition_pretrained_models/2022_02_21/3_7.hmm          uasr-data/db-hsb-asr/grammatics/word_class_lm/model/
+
+ADD inputs/cfg/package.cfg /
+
+RUN UASR_HOME=uasr /dLabPro/bin.release/dlabpro /UASR/scripts/dlabpro/tools/REC_PACKDATA.xtp rec package.cfg
 
 ############################################
 # fetch intermediates and results
