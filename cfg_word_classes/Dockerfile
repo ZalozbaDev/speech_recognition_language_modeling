@@ -158,3 +158,6 @@ RUN /evaluate_results.sh
 
 # fetch merged grammar 
 ## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt /output/
+
+# fetch output files for recognizer
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_cfg_word_classes cp -r /uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/recognizer /output/

@@ -54,11 +54,16 @@ Intermediates:
 
 Outputs:
 
-* 
+* packaged files for recognition
 	* see "Dockerfile" on how to extract the files after successful container build
 
 Evaluation:
+* The final step of the container build will parse the recognizer output and display weekday, date and time.
+You can compare this output with the spoken inputs, for instance with some shell magic using ALSA command line utilities:
 
+```console
+for i in $(find inputs/sig/ -name "*.wav" | sort); do echo $i; aplay $i; done
+```
 
 # Word class file hierarchies
 
