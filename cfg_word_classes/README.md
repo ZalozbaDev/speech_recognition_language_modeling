@@ -35,6 +35,7 @@ Tools:
 * dLabPro script "grm2ofst.xtp" for grammar conversion UASR to OpenFST
 * python script "grmmerge.py" which executes conversion and merging
 * bash script "generate_plots.sh" to visualize all word class files as .pdf
+* bash script "evaluate_results.sh" for evaluation of recognition output
 
 Running:
 
@@ -58,6 +59,7 @@ Outputs:
 	* see "Dockerfile" on how to extract the files after successful container build
 
 Evaluation:
+
 * The final step of the container build will parse the recognizer output and display weekday, date and time.
 You can compare this output with the spoken inputs, for instance with some shell magic using ALSA command line utilities:
 
