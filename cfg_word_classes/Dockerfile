@@ -112,6 +112,9 @@ RUN /generate_plots.sh
 RUN mkdir -p uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
 RUN cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst.txt   uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
 RUN cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_lex.txt    uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
+# don't forget to copy the input and output symbol files!!! Packaging will not warn you if these are not found!
+RUN cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst_is.txt   uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
+RUN cp /grammars/smart_lamp_hsb_evl_fsg_num.txt_ofst_os.txt   uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/grm/
 
 RUN mkdir -p uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/model/
 RUN cp /speech_recognition_pretrained_models/2022_02_21/classes.txt      uasr-data/db-hsb-asr-exp/grammatics/smartlamp_numbers/model/
