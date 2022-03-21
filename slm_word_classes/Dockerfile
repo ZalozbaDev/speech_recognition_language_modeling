@@ -88,6 +88,38 @@ RUN apt install -y python3 python3-numpy python3-matplotlib python3-yaml
 RUN python3 BASgenerator.py HSB.yaml || /bin/true
 
 ############################################
+# Create statistical language model
+############################################
+
+RUN mkdir -p /lm
+
+# combine lexica from corpus with additional words from word classes (not part of corpus)
+COPY inputs/lexicon/word_class_lexicon.vocab /
+RUN cat corpus/hsb.vocab word_class_lexicon.vocab > corpus/hsb_combined.vocab
+
+# create symbols
+RUN ngramsymbols --OOV_symbol="<unk>" corpus/hsb_combined.vocab lm/hsb.syms
+
+# create corpus fst archive
+RUN farcompilestrings --fst_type=compact --symbols=lm/hsb.syms --keep_symbols --unknown_symbol="<unk>" corpus/hsb.corp lm/hsb.far
+
+# count n-grams (bigrams only)
+RUN ngramcount --order=2 lm/hsb.far lm/hsb.cnts
+
+# assemble model
+RUN ngrammake --backoff --method=witten_bell lm/hsb.cnts lm/hsb.mod
+
+# prune (optional)
+RUN ngramshrink --method=relative_entropy --theta=1.0e-7 lm/hsb.mod lm/hsb.pru
+
+# evaluation of not pruned and pruned models
+RUN ngramperplexity --OOV_symbol="<unk>" lm/hsb.mod lm/hsb.far
+RUN ngramperplexity --OOV_symbol="<unk>" lm/hsb.pru lm/hsb.far
+
+
+
+
+############################################
 # fetch intermediates and results
 ############################################
 
