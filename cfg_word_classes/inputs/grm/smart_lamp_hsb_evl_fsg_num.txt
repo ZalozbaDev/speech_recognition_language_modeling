@@ -597,6 +597,36 @@ LEX: ŽNJENC	(.|#|)ZnjEnts(.|#|)
 LEX: ŽNJENCA	(.|#|)ZnjEntsa(.|#|)
 
 
+# the following lexicon entries are not actively used by the grammar below, but they are 
+# still added here to have complete plots with all symbols
+LEX: STOW	(.|#|)sto(.|#|)
+LEX: STOW	(.|#|)stOw(.|#|)
+LEX: STA	(.|#|)sta(.|#|)
+LEX: DWĚSĆĚ	(.|#|)dwjistSji(.|#|)
+LEX: TYSAC	(.|#|)t1sats(.|#|)
+LEX: MILION	(.|#|)miliOn(.|#|)
+LEX: MILIONAJ	(.|#|)miliOnaj(.|#|)
+LEX: MILIONOW	(.|#|)miliOno(.|#|)
+LEX: MILIONOW	(.|#|)miliOnOw(.|#|)
+LEX: MILIONY	(.|#|)miliOn1(.|#|)
+LEX: MILIARD	(.|#|)miliart(.|#|)
+LEX: MILIARD	(.|#|)miliard(.|#|)
+LEX: MILIARDAJ	(.|#|)miliardaj(.|#|)
+LEX: MILIARDOW	(.|#|)miliardo(.|#|)
+LEX: MILIARDOW	(.|#|)miliardOw(.|#|)
+LEX: MILIARDY	(.|#|)miliard1(.|#|)
+LEX: BILION	(.|#|)biliOn(.|#|)
+LEX: BILIONAJ	(.|#|)biliOnaj(.|#|)
+LEX: BILIONOW	(.|#|)biliOno(.|#|)
+LEX: BILIONOW	(.|#|)biliOnOw(.|#|)
+LEX: BILIONY	(.|#|)biliOn1(.|#|)
+
+# grammar placeholder to assure the lexicon entries above are incorporated into openFST
+GRM: <NUM1-XXX> :<NUM> NUM1-10^15 :</NUM>
+GRM: <IGNOREME> KOFEJ:KOFEJ KOFEJ:KOFEJ KOFEJ:KOFEJ KOFEJ:KOFEJ <NUM1-XXX> KOFEJ:KOFEJ KOFEJ:KOFEJ KOFEJ:KOFEJ
+GRM: (S) <IGNOREME> (F)
+# remove the 3 lines above if this dummy disturbs recognition
+
 # Main entry
 GRM: (S) <PAU> (S)
 GRM: (F) <PAU> (F)
