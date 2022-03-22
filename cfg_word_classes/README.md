@@ -51,6 +51,7 @@ Intermediates:
 
 * .pdf files that visualize all word classes
 * UASR grammar converted to OpenFST ("smart_lamp_hsb_evl_fsg_num.txt_ofst.txt.save.txt")
+* merged grammar with word classes ("smart_lamp_hsb_evl_fsg_num.txt_ofst.txt")
 * extracted lexicon from UASR grammar file ("smart_lamp_hsb_evl_fsg_num.txt_lex.txt")
     * see "Dockerfile" on how to extract the files after successful container build
 

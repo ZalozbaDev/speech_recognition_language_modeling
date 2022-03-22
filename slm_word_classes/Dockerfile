@@ -137,6 +137,18 @@ RUN cd merge && cat hsb_tmp.txt | sed -e 's/<epsilon>/<eps>/g' | sed -e 's/{PERC
 # finally run the merge itself
 RUN cd merge && python3 grmmerge.py -lmw 10 -ofstin hsb.txt
 
+############################################
+# Plot grammars
+############################################
+
+RUN mkdir -p plots/
+
+ADD generate_plots.sh /
+
+RUN apt install -y graphviz
+
+RUN /generate_plots.sh
+
 ################################################################
 # Package grammar, lexicon and acoustic model for recognition 
 ################################################################
@@ -183,6 +195,17 @@ RUN /dLabPro/bin.release/recognizer -cfg recognizer.cfg /sig/list.flst 2>/dev/nu
 
 ## mkdir -p output && rm -rf ./output/*
 
-# fetch  
-## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_slm_word_classes cp ?????????? /output/
+# fetch SLM
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_slm_word_classes cp /merge/hsb_tmp.txt /output/
 
+# fetch merged grammar
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_slm_word_classes cp /merge/hsb.txt_ofst.txt /output/
+
+# fetch all plots
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_slm_word_classes cp -r /plots /output/
+
+# fetch merged phonetical lexicon
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_slm_word_classes cp /uasr-data/db-hsb-asr/grammatics/word_class_lm/lex/hsb.ulex /output/
+
+# fetch output files for recognizer
+## docker run --mount type=bind,source="$(pwd)"/output,target=/output/ -it speech_recognition_slm_word_classes cp -r /uasr-data/db-hsb-asr/grammatics/word_class_lm/recognizer /output/

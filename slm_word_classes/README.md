@@ -40,6 +40,7 @@ Tools:
     * check directory tools
 * python script "grmmerge.py" which executes model conversion and word class merging
     * check directory tools
+* bash script "generate_plots.sh" to visualize all word class files as .pdf
 
 Running:
 
@@ -52,7 +53,16 @@ docker build -t speech_recognition_slm_word_classes .
 
 Intermediates:
 
+* .pdf files that visualize all word classes
+* statistical language model from corpus converted to OpenFST ("hsb_tmp.txt")
+* merged grammar with word classes ("hsb.txt_ofst.txt")
+* merged phonetical lexicon ("hsb.ulex")
+    * see "Dockerfile" on how to extract the files after successful container build
+
 Outputs:
+
+* packaged files for recognition
+	* see "Dockerfile" on how to extract the files after successful container build
 
 Evaluation:
 
