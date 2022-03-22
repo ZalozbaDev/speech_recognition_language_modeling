@@ -7,6 +7,7 @@ of the resulting grammar is tested with example sentences.
 Inputs:
 
 * lexicon and grammar in UASR format ("smart_lamp_hsb_evl_fsg_num.txt")
+    * the lexicon already contains entries for the word classes
     * check directory inputs/grm
 * word class definitions
     * dates
