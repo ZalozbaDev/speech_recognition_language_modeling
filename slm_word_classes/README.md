@@ -12,7 +12,8 @@ Inputs:
 * word class definitions
     * numbers from 1..100 (percentages)
         * check directory inputs/word_classes/
-* existing lexica (TBD should be generated)
+* prebuilt word class lexica ("word_class_lexicon.vocab" and "word_class_lexicon.ulex")
+    * can eventually be generated from a corpus that contains all words from word class files
     * check directory inputs/lexicon
 * existing Upper Sorbian acoustic model ("3_7.hmm"), statistics ("feainfo.object") and model configuration ("classes.txt") for evaluation
     * see https://github.com/ZalozbaDev/speech_recognition_pretrained_models
