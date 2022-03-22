@@ -67,6 +67,12 @@ Outputs:
 
 Evaluation:
 
+* The final step of the container build will parse the recognizer output and display the percentage recognized.
+You can compare this output with the spoken inputs, for instance with some shell magic using ALSA command line utilities:
+
+```console
+for i in $(find inputs/sig/ -name "*.wav" | sort); do echo $i; aplay $i; done
+```
 
 # Word class file hierarchy
 
