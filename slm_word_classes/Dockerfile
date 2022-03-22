@@ -188,6 +188,8 @@ ADD inputs/cfg/recognizer.cfg /
 RUN rm -f recognizer_log.txt
 RUN /dLabPro/bin.release/recognizer -cfg recognizer.cfg /sig/list.flst 2>/dev/null | grep  'cmd:\|processing' | tee recognizer_log.txt
 
+ADD evaluate_results.sh /
+RUN /evaluate_results.sh
 
 ############################################
 # fetch intermediates and results
