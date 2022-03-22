@@ -41,6 +41,7 @@ Tools:
 * python script "grmmerge.py" which executes model conversion and word class merging
     * check directory tools
 * bash script "generate_plots.sh" to visualize all word class files as .pdf
+* bash script "evaluate_results.sh" for evaluation of recognition output
 
 Running:
 
