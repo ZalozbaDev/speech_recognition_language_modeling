@@ -14,6 +14,10 @@ An example of a statistical language model with word classes can be found here:
 
 Documentation which was used to generate these examples can be found in the "report" folder.
 
+Additionally, an example of a minimalistic grammar can be found here:
+
+* mg_technology_preview
+
 ## Authors
 
 - Dr. Ivan Kraljevski (Fraunhofer Institute for Ceramic Technologies and Systems IKTS, Dresden, Germany)

@@ -1,0 +1,600 @@
+% Grammar calls categories that are generated in other grammars in this folder:
+% cHsbClock = Category of Upper-Sorbian (HSB) clock times
+% cHsbWDay = Category of HSB weekdays
+% cHsbDateG = Category of HSB dates in genitive case
+% cHsbDateN = Category of HSB dates in nominative case
+% NEXT is a fixed semantic variable that represents the 'next sensible day'. It is fixed until post-processing
+
+startCategory(cHsbPrompt(_)).
+
+% PROsU <TIME>+0+720+0+180</TIME> BUDzIc 									wakeUp(time)
+% Instruction: [budzic] triggers merge1, then merge2 with clocktime. [Prosu] triggers merge1 with [budzic].
+
+['budzic'] :: [=cnix, =cHsbClock, cProsBudz]. % hAhB.wakeUp(NEXT,B)
+['Prosu'] :: [=cProsBudz, cHsbPrompt]. % hA.A
+
+
+% CIN <WDAY>+7</WDAY> TERMIN <TIME>+0+720+0-120</TIME>						appointment(wday,time)
+% Instruction: [termin] triggers merge1 with clocktime, then merge2 with weekday. [Cin] triggers merge1 with [termin].
+
+['termin'] :: [=cHsbClock, =cHsbWDay, cCinTerm]. % hAhB.appointment(B,A)
+['Cin'] :: [=cCinTerm, cHsbPrompt]. % hA.A
+
+
+% LAMPA_CHCU <TIME>+0+720+0+240</TIME> STANYc								wakeUp(time)
+% Instructions: [stanyc] triggers merge1, then merge2 with clocktime. [Lampa chcu] triggers merge1 with [stanyc].
+
+['stanyc'] :: [=cnix, =cHsbClock, cLampChcuStan]. % hAhB.wakeUp(NEXT,B)
+['Lampa chcu'] :: [=cLampChcuStan, cHsbPrompt]. % hA.A
+
+
+% CIN_TERMIN <WDAY>+3</WDAY> <TIME>+720+0+420</TIME>							appointment(wday,time)
+% Instructions: [] triggers merge1 with clocktime, then merge2 with weekday. [Cin termin] triggers merge1 with [].
+
+[e1] :: [=cHsbClock, =cHsbWDay, cCinTerm2]. % hAhB.appointment(B,A)
+['Cin termin'] :: [=cCinTerm2, cHsbPrompt]. % hA.A
+
+
+% LAMPA <WDAY>+5</WDAY> <TIME>+0+0+120</TIME> NJEZABUDz_NA_KOFEJ					appointment(wday,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with weekday. [njezabudz na kofej] triggers merge1, then merge2 with []. [Lampa] triggers merge1 with [njezabudz na kofej].
+
+[e2] :: [=cHsbClock, =cHsbWDay, cLamNjezKof_]. % hAhB.appointment(B,A)
+['njezabudz na kofej'] :: [=cnix, =cLamNjezKof_, cLamNjezKof]. % hAhB.B
+['Lampa'] :: [=cLamNjezKof, cHsbPrompt]. % hA.A
+
+
+% LAMPA_CHCU <DATE>+2-306</DATE> <TIME>+0+720+0-180</TIME> STANYc					wakeUp(date,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with date. [stanyc] triggers merge1, then merge2 with []. [Lampa chcu] triggers merge1 with [stanyc].
+
+[e3] :: [=cHsbClock, =cHsbDateG, cLamChcuStan2_]. % hAhB.wakeUp(B,A)
+['stanyc'] :: [=cnix, =cLamChcuStan2_, cLamChcuStan2]. % hAhB.B
+['Lampa chcu'] :: [=cLamChcuStan2, cHsbPrompt]. % hA.A
+
+
+% LAMPA_DYRBJU <WDAY>+5</WDAY> <TIME>+0+0+0+240</TIME> WOTJec					appointment(wday,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with weekday. [wotjec] triggers merge1, then merge2 with []. [Lampa dyrbju] triggers merge1 with [wotjec].
+
+[e4] :: [=cHsbClock, =cHsbWDay, cLamDyrbWotj_]. % hAhB.appointment(B,A)
+['wotjec'] :: [=cnix, =cLamDyrbWotj_, cLamDyrbWotj]. % hAhB.B
+['Lampa dyrbju'] :: [=cLamDyrbWotj, cHsbPrompt]. % hA.A
+
+
+% PROsU <WDAY>+2</WDAY> <TIME>+0+0+0+420</TIME> BUDzIc						wakeUp(wday,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with weekday. [budzic] triggers merge1, then merge2 with []. [Prosu] triggers merge1 with [budzic].
+
+[e5] :: [=cHsbClock, =cHsbWDay, cProsBudz2_]. % hAhB.wakeUp(B,A)
+['budzic'] :: [=cnix, =cProsBudz2_, cProsBudz2]. % hAhB.B
+['Prosu'] :: [=cProsBudz2, cHsbPrompt]. % hA.A
+
+
+% LAMPA_ZAPISAJ_MI_NOWY_TERMIN <DATE>+2-153</DATE> <TIME>+1080+0+15</TIME>			appointment(date,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with date. [Lampa zapisaj mi nowy termin] triggers merge1 with [].
+
+[e6] :: [=cHsbClock, =cHsbDateN, cNowTerm]. % hAhB.appointment(B,A)
+['Lampa zapisaj mi nowy termin'] :: [=cNowTerm, cHsbPrompt]. % hA.A
+
+% LAMPA_ZARJADUJ_NOWY_TERMIN <DATE>+5+20-306</DATE> <TIME>+0+720+0+300</TIME>			appointment(date,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with date. [Lampa zarjaduj nowy termin] triggers merge1 with [].
+
+[e69] :: [=cHsbClock, =cHsbDateG, cNowTerm]. % hAhB.appointment(B,A)
+['Lampa zarjaduj nowy termin'] :: [=cNowTerm, cHsbPrompt]. % hA.A
+
+
+% DOPOMn_MNJE_NA_NARODNINY <DATE>+5-61</DATE>								appointment(date)
+
+
+% CIN <DATE>+8-214</DATE> <TIME>+0+720+0+0</TIME> TERMIN						appointment(date,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with date. [termin] triggers merge1, then merge2 with []. [Cin] triggers merge1 with [termin].
+
+[e7] :: [=cHsbClock, =cHsbDateG, cCinTerm3_]. % hAhB.appointment(B,A)
+['termin'] :: [=cnix, =cCinTerm3_, cCinTerm3]. % hAhB.B
+['Cin'] :: [=cCinTerm3, cHsbPrompt]. % hA.A
+
+
+% PROsU_BUDz_MNJE <WDAY>+1</WDAY> <TIME>+0+0+0+480</TIME>						wakeUp(wday,time)
+% Instruction: [] triggers merge1 with clocktime, then merge2 with weekday. [Prosu budz mnje] triggers merge1 with [].
+
+[e8] :: [=cHsbClock, =cHsbWDay, cProBudMnj]. % hAhB.wakeUp(B,A)
+['Prosu budz mnje'] :: [=cProBudMnj, cHsbPrompt]. % hA.A
+
+
+% NAKUP_DzecI_PosTU_ZETKANJE_PARTY
+
+
+% DOPOMn_MNJE_NA_SWJEDzEn <WDAY>+6</WDAY> <DATE>+7-122</DATE> <TIME>+0+0-120</TIME>		appointment(date,time)
+% Instructions: The first [] triggers merge1 with clocktime, then merge2 with date. The second [] triggers merge1 with the first [], then merge2 with weekday. [Dopomn mnje na swjedzen] triggers merge1 with the first [].]
+
+[e9] :: [=cHsbClock, =cHsbDateG, cDopoSwje_]. % hAhB.appointment(B,A)
+[e10] :: [=cDopoSwje_, =cHsbWDay, cDopoSwje]. % hAhB.A				Caution: 2 Inputs, so it is lAlB.A
+['Dopomn mnje na swjedzen'] :: [=cDopoSwje, cHsbPrompt]. % hA.A
+
+
+[e11] :: [cnix]. % 0
+
+['januar'] :: [=cday, +m31, cmon]. % hA.A
+['wulki rozk'] :: [=cday, +m31, cmon]. % hA.A
+['preni'] :: [=cday, +m31, cmon]. % hA.A
+['februar'] :: [=cday, +m29, cmon]. % hA.A+31
+['maly rozk'] :: [=cday, +m29, cmon]. % hA.A+31
+['druhi'] :: [=cday, +m29, cmon]. % hA.A+31
+['merc'] :: [=cday, +m31, cmon]. % hA.A-306
+['naletnik'] :: [=cday, +m31, cmon]. % hA.A-306
+['treci'] :: [=cday, +m31, cmon]. % hA.A-306
+['apryl'] :: [=cday, +m30, cmon]. % hA.A-275
+['jutrownik'] :: [=cday, +m30, cmon]. % hA.A-275
+['stworty'] :: [=cday, +m30, cmon]. % hA.A-275
+['meja'] :: [=cday, +f, cmon]. % hA.A-245
+['rozownik'] :: [=cday, +m31, cmon]. % hA.A-245
+['pjaty'] :: [=cday, +m31, cmon]. % hA.A-245
+['junij'] :: [=cday, +m30, cmon]. % hA.A-214
+['smaznik'] :: [=cday, +m30, cmon]. % hA.A-214
+['sesty'] :: [=cday, +m30, cmon]. % hA.A-214
+['julij'] :: [=cday, +m31, cmon]. % hA.A-184
+['praznik'] :: [=cday, +m31, cmon]. % hA.A-184
+['sedmy'] :: [=cday, +m31, cmon]. % hA.A-184
+['awgust'] :: [=cday, +m31, cmon]. % hA.A-153
+['znjenc'] :: [=cday, +m31, cmon]. % hA.A-153
+['wosmy'] :: [=cday, +m31, cmon]. % hA.A-153
+['september'] :: [=cday, +m30, cmon]. % hA.A-122
+['poznjenc'] :: [=cday, +m30, cmon]. % hA.A-122
+['dzewjaty'] :: [=cday, +m30, cmon]. % hA.A-122
+['oktober'] :: [=cday, +m31, cmon]. % hA.A-92
+['winowc'] :: [=cday, +m31, cmon]. % hA.A-92
+['dzesaty'] :: [=cday, +m31, cmon]. % hA.A-92
+['nowember'] :: [=cday, +m30, cmon]. % hA.A-61
+['nazymnik'] :: [=cday, +m30, cmon]. % hA.A-61
+['jednaty'] :: [=cday, +m30, cmon]. % hA.A-61
+['december'] :: [=cday, +m31, cmon]. % hA.A-31
+['hodownik'] :: [=cday, +m31, cmon]. % hA.A-31
+['dwanaty'] :: [=cday, +m31, cmon]. % hA.A-31
+
+['preni'] :: [cday, -m29, -m30, -m31_]. % 1
+['druhi'] :: [cday, -m29, -m30, -m31_]. % 2
+['treci'] :: [cday, -m29, -m30, -m31_]. % 3
+['stworty'] :: [cday, -m29, -m30, -m31_]. % 4
+['pjaty'] :: [cday, -m29, -m30, -m31_]. % 5
+['sesty'] :: [cday, -m29, -m30, -m31_]. % 6
+['sedmy'] :: [cday, -m29, -m30, -m31_]. % 7
+['wosmy'] :: [cday, -m29, -m30, -m31_]. % 8
+['dzewjaty'] :: [cday, -m29, -m30, -m31_]. % 9
+['dzesaty'] :: [cday, -m29, -m30, -m31_]. % 10
+['jednaty'] :: [cday, -m29, -m30, -m31_]. % 11
+['dwanaty'] :: [cday, -m29, -m30, -m31_]. % 12
+['trinaty'] :: [cday, -m29, -m30, -m31_]. % 13
+['styrnaty'] :: [cday, -m29, -m30, -m31_]. % 14
+['pjatnaty'] :: [cday, -m29, -m30, -m31_]. % 15
+['sesnaty'] :: [cday, -m29, -m30, -m31_]. % 16
+['sydomnaty'] :: [cday, -m29, -m30, -m31_]. % 17
+['wosomnaty'] :: [cday, -m29, -m30, -m31_]. % 18
+['dzewjatnaty'] :: [cday, -m29, -m30, -m31_]. % 19
+['dwacty'] :: [cday, -m29, -m30, -m31_]. % 20
+['dwacety'] :: [cday, -m29, -m30, -m31_]. % 20
+['jenadwacty'] :: [cday, -m29, -m30, -m31_]. % 21
+['jedynadwacty'] :: [cday, -m29, -m30, -m31_]. % 21
+['jenadwacety'] :: [cday, -m29, -m30, -m31_]. % 21
+['jedynadwacety'] :: [cday, -m29, -m30, -m31_]. % 21
+['dwajadwacty'] :: [cday, -m29, -m30, -m31_]. % 22
+['dwajadwacety'] :: [cday, -m29, -m30, -m31_]. % 22
+['triadwacty'] :: [cday, -m29, -m30, -m31_]. % 23
+['triadwacety'] :: [cday, -m29, -m30, -m31_]. % 23
+['styriadwacty'] :: [cday, -m29, -m30, -m31_]. % 24
+['sytriadwacety'] :: [cday, -m29, -m30, -m31_]. % 24
+['pjecadwacty'] :: [cday, -m29, -m30, -m31_]. % 25
+['pjecadwacety'] :: [cday, -m29, -m30, -m31_]. % 25
+['sescadwacty'] :: [cday, -m29, -m30, -m31_]. % 26
+['sescadwacety'] :: [cday, -m29, -m30, -m31_]. % 26
+['sydomadwacty'] :: [cday, -m29, -m30, -m31_]. % 27
+['sydomadwacety'] :: [cday, -m29, -m30, -m31_]. % 27
+['wosomadwacty'] :: [cday, -m29, -m30, -m31_]. % 28
+['wosomadwacety'] :: [cday, -m29, -m30, -m31_]. % 28
+['dzewjecadwacty'] :: [cday, -m29, -m30, -m31_]. % 29
+['dzewjecadwacety'] :: [cday, -m29, -m30, -m31_]. % 29
+['tricty'] :: [cday, -m30, -m31_]. % 30
+['tricety'] :: [cday, -m30, -m31_]. % 30
+['jedynatricty'] :: [cday, -m31_]. % 31
+['jedynatricety'] :: [cday, -m31_]. % 31
+
+['prenja'] :: [cday, -f]. % 1
+['druha'] :: [cday, -f]. % 2
+['treca'] :: [cday, -f]. % 3
+['stworta'] :: [cday, -f]. % 4
+['pjata'] :: [cday, -f]. % 5
+['sesta'] :: [cday, -f]. % 6
+['sedma'] :: [cday, -f]. % 7
+['wosma'] :: [cday, -f]. % 8
+['dzewjata'] :: [cday, -f]. % 9
+['dzesata'] :: [cday, -f]. % 10
+['jednata'] :: [cday, -f]. % 11
+['dwanata'] :: [cday, -f]. % 12
+['trinata'] :: [cday, -f]. % 13
+['styrnata'] :: [cday, -f]. % 14
+['pjatnata'] :: [cday, -f]. % 15
+['sesnata'] :: [cday, -f]. % 16
+['sydomnata'] :: [cday, -f]. % 17
+['wosomnata'] :: [cday, -f]. % 18
+['dzewjatnata'] :: [cday, -f]. % 19
+['dwacta'] :: [cday, -f]. % 20
+['dwaceta'] :: [cday, -f]. % 20
+['jenadwacta'] :: [cday, -f]. % 21
+['jedynadwacta'] :: [cday, -f]. % 21
+['jenadwaceta'] :: [cday, -f]. % 21
+['jedynadwaceta'] :: [cday, -f]. % 21
+['dwajadwacta'] :: [cday, -f]. % 22
+['dwajadwaceta'] :: [cday, -f]. % 22
+['triadwacta'] :: [cday, -f]. % 23
+['triadwaceta'] :: [cday, -f]. % 23
+['styriadwacta'] :: [cday, -f]. % 24
+['sytriadwaceta'] :: [cday, -f]. % 24
+['pjecadwacta'] :: [cday, -f]. % 25
+['pjecadwaceta'] :: [cday, -f]. % 25
+['sescadwacta'] :: [cday, -f]. % 26
+['sescadwaceta'] :: [cday, -f]. % 26
+['sydomadwacta'] :: [cday, -f]. % 27
+['sydomadwaceta'] :: [cday, -f]. % 27
+['wosomadwacta'] :: [cday, -f]. % 28
+['wosomadwaceta'] :: [cday, -f]. % 28
+['dzewjecadwacta'] :: [cday, -f]. % 29
+['dzewjecadwaceta'] :: [cday, -f]. % 29
+['tricta'] :: [cday, -m30, -m31_]. % 30
+['triceta'] :: [cday, -f]. % 30
+['jedynatricta'] :: [cday, -f]. % 31
+['jedynatriceta'] :: [cday, -f]. % 31
+
+[e12] :: [=cday, +m29, cday]. % hA.A
+[e13] :: [=cday, +m29, +m30, +m31_, cday, -m29]. % hA.A
+[e14] :: [=cday, +m30, cday]. % hA.A
+[e15] :: [=cday, +m30, +m31_, cday, -m30]. % hA.A
+[e16] :: [=cday, +m31_, cday, -m31]. % hA.A
+
+[e17] :: [=cmon, cHsbDateN]. % hA.Date(A)
+
+['januara'] :: [=cday, +m31, cmon]. % hA.A
+['wulkeho rozka'] :: [=cday, +m31, cmon]. % hA.A
+['prenjeho'] :: [=cday, +m31, cmon]. % hA.A
+['prenjo'] :: [=cday, +m31, cmon]. % hA.A
+['februara'] :: [=cday, +m29, cmon]. % hA.A+31
+['maleho rozka'] :: [=cday, +m29, cmon]. % hA.A+31
+['druheho'] :: [=cday, +m29, cmon]. % hA.A+31
+['druho'] :: [=cday, +m29, cmon]. % hA.A+31
+['merca'] :: [=cday, +m31, cmon]. % hA.A-306
+['naletnika'] :: [=cday, +m31, cmon]. % hA.A-306
+['treceho'] :: [=cday, +m31, cmon]. % hA.A-306
+['treco'] :: [=cday, +m31, cmon]. % hA.A-306
+['apryla'] :: [=cday, +m30, cmon]. % hA.A-275
+['jutrownika'] :: [=cday, +m30, cmon]. % hA.A-275
+['stworteho'] :: [=cday, +m30, cmon]. % hA.A-275
+['stworto'] :: [=cday, +m30, cmon]. % hA.A-275
+['meje'] :: [=cday, +f, cmon]. % hA.A-245
+['rozownika'] :: [=cday, +m31, cmon]. % hA.A-245
+['pjateho'] :: [=cday, +m31, cmon]. % hA.A-245
+['pjato'] :: [=cday, +m31, cmon]. % hA.A-245
+['junija'] :: [=cday, +m30, cmon]. % hA.A-214
+['smaznika'] :: [=cday, +m30, cmon]. % hA.A-214
+['sesteho'] :: [=cday, +m30, cmon]. % hA.A-214
+['sesto'] :: [=cday, +m30, cmon]. % hA.A-214
+['julija'] :: [=cday, +m31, cmon]. % hA.A-184
+['praznika'] :: [=cday, +m31, cmon]. % hA.A-184
+['sedmeho'] :: [=cday, +m31, cmon]. % hA.A-184
+['sedmo'] :: [=cday, +m31, cmon]. % hA.A-184
+['awgusta'] :: [=cday, +m31, cmon]. % hA.A-153
+['znjenca'] :: [=cday, +m31, cmon]. % hA.A-153
+['wosmeho'] :: [=cday, +m31, cmon]. % hA.A-153
+['wosmo'] :: [=cday, +m31, cmon]. % hA.A-153
+['septembra'] :: [=cday, +m30, cmon]. % hA.A-122
+['poznjenca'] :: [=cday, +m30, cmon]. % hA.A-122
+['dzewjateho'] :: [=cday, +m30, cmon]. % hA.A-122
+['dzewjato'] :: [=cday, +m30, cmon]. % hA.A-122
+['oktobra'] :: [=cday, +m31, cmon]. % hA.A-92
+['winowca'] :: [=cday, +m31, cmon]. % hA.A-92
+['dzesateho'] :: [=cday, +m31, cmon]. % hA.A-92
+['dzesato'] :: [=cday, +m31, cmon]. % hA.A-92
+['nowembra'] :: [=cday, +m30, cmon]. % hA.A-61
+['nazymnika'] :: [=cday, +m30, cmon]. % hA.A-61
+['jednateho'] :: [=cday, +m30, cmon]. % hA.A-61
+['jednato'] :: [=cday, +m30, cmon]. % hA.A-61
+['decembra'] :: [=cday, +m31, cmon]. % hA.A-31
+['hodownika'] :: [=cday, +m31, cmon]. % hA.A-31
+['dwanateho'] :: [=cday, +m31, cmon]. % hA.A-31
+['dwanato'] :: [=cday, +m31, cmon]. % hA.A-31
+
+['prenjeho'] :: [cday, -m29, -m30, -m31_]. % 1
+['prenjo'] :: [cday, -m29, -m30, -m31_]. % 1
+['druheho'] :: [cday, -m29, -m30, -m31_]. % 2
+['druho'] :: [cday, -m29, -m30, -m31_]. % 2
+['treceho'] :: [cday, -m29, -m30, -m31_]. % 3
+['treco'] :: [cday, -m29, -m30, -m31_]. % 3
+['stworteho'] :: [cday, -m29, -m30, -m31_]. % 4
+['stworto'] :: [cday, -m29, -m30, -m31_]. % 4
+['pjateho'] :: [cday, -m29, -m30, -m31_]. % 5
+['pjato'] :: [cday, -m29, -m30, -m31_]. % 5
+['sesteho'] :: [cday, -m29, -m30, -m31_]. % 6
+['sesto'] :: [cday, -m29, -m30, -m31_]. % 6
+['sedmeho'] :: [cday, -m29, -m30, -m31_]. % 7
+['sedmo'] :: [cday, -m29, -m30, -m31_]. % 7
+['wosmeho'] :: [cday, -m29, -m30, -m31_]. % 8
+['wosmo'] :: [cday, -m29, -m30, -m31_]. % 8
+['dzewjateho'] :: [cday, -m29, -m30, -m31_]. % 9
+['dzewjato'] :: [cday, -m29, -m30, -m31_]. % 9
+['dzesateho'] :: [cday, -m29, -m30, -m31_]. % 10
+['dzesato'] :: [cday, -m29, -m30, -m31_]. % 10
+['jednateho'] :: [cday, -m29, -m30, -m31_]. % 11
+['jednato'] :: [cday, -m29, -m30, -m31_]. % 11
+['dwanateho'] :: [cday, -m29, -m30, -m31_]. % 12
+['dwanato'] :: [cday, -m29, -m30, -m31_]. % 12
+['trinateho'] :: [cday, -m29, -m30, -m31_]. % 13
+['trinato'] :: [cday, -m29, -m30, -m31_]. % 13
+['styrnateho'] :: [cday, -m29, -m30, -m31_]. % 14
+['styrnato'] :: [cday, -m29, -m30, -m31_]. % 14
+['pjatnateho'] :: [cday, -m29, -m30, -m31_]. % 15
+['pjatnato'] :: [cday, -m29, -m30, -m31_]. % 15
+['sesnateho'] :: [cday, -m29, -m30, -m31_]. % 16
+['sesnato'] :: [cday, -m29, -m30, -m31_]. % 16
+['sydomnateho'] :: [cday, -m29, -m30, -m31_]. % 17
+['sydomnato'] :: [cday, -m29, -m30, -m31_]. % 17
+['wosomnateho'] :: [cday, -m29, -m30, -m31_]. % 18
+['wosomnato'] :: [cday, -m29, -m30, -m31_]. % 18
+['dzewjatnateho'] :: [cday, -m29, -m30, -m31_]. % 19
+['dzewjatnato'] :: [cday, -m29, -m30, -m31_]. % 19
+['dwacteho'] :: [cday, -m29, -m30, -m31_]. % 20
+['dwaceteho'] :: [cday, -m29, -m30, -m31_]. % 20
+['dwacto'] :: [cday, -m29, -m30, -m31_]. % 20
+['dwaceto'] :: [cday, -m29, -m30, -m31_]. % 20
+['jenadwacteho'] :: [cday, -m29, -m30, -m31_]. % 21
+['jedynadwacteho'] :: [cday, -m29, -m30, -m31_]. % 21
+['jenadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 21
+['jedynadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 21
+['jenadwacto'] :: [cday, -m29, -m30, -m31_]. % 21
+['jedynadwacto'] :: [cday, -m29, -m30, -m31_]. % 21
+['jenadwaceto'] :: [cday, -m29, -m30, -m31_]. % 21
+['jedynadwaceto'] :: [cday, -m29, -m30, -m31_]. % 21
+['dwajadwacteho'] :: [cday, -m29, -m30, -m31_]. % 22
+['dwajadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 22
+['dwajadwacto'] :: [cday, -m29, -m30, -m31_]. % 22
+['dwajadwaceto'] :: [cday, -m29, -m30, -m31_]. % 22
+['triadwacteho'] :: [cday, -m29, -m30, -m31_]. % 23
+['triadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 23
+['triadwacto'] :: [cday, -m29, -m30, -m31_]. % 23
+['triadwaceto'] :: [cday, -m29, -m30, -m31_]. % 23
+['styriadwacteho'] :: [cday, -m29, -m30, -m31_]. % 24
+['sytriadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 24
+['styriadwacto'] :: [cday, -m29, -m30, -m31_]. % 24
+['sytriadwaceto'] :: [cday, -m29, -m30, -m31_]. % 24
+['pjecadwacteho'] :: [cday, -m29, -m30, -m31_]. % 25
+['pjecadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 25
+['pjecadwacto'] :: [cday, -m29, -m30, -m31_]. % 25
+['pjecadwaceto'] :: [cday, -m29, -m30, -m31_]. % 25
+['sescadwacteho'] :: [cday, -m29, -m30, -m31_]. % 26
+['sescadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 26
+['sescadwacto'] :: [cday, -m29, -m30, -m31_]. % 26
+['sescadwaceto'] :: [cday, -m29, -m30, -m31_]. % 26
+['sydomadwacteho'] :: [cday, -m29, -m30, -m31_]. % 27
+['sydomadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 27
+['sydomadwacto'] :: [cday, -m29, -m30, -m31_]. % 27
+['sydomadwaceto'] :: [cday, -m29, -m30, -m31_]. % 27
+['wosomadwacteho'] :: [cday, -m29, -m30, -m31_]. % 28
+['wosomadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 28
+['wosomadwacto'] :: [cday, -m29, -m30, -m31_]. % 28
+['wosomadwaceto'] :: [cday, -m29, -m30, -m31_]. % 28
+['dzewjecadwacteho'] :: [cday, -m29, -m30, -m31_]. % 29
+['dzewjecadwaceteho'] :: [cday, -m29, -m30, -m31_]. % 29
+['dzewjecadwacto'] :: [cday, -m29, -m30, -m31_]. % 29
+['dzewjecadwaceto'] :: [cday, -m29, -m30, -m31_]. % 29
+['tricteho'] :: [cday, -m30, -m31_]. % 30
+['triceteho'] :: [cday, -m30, -m31_]. % 30
+['tricto'] :: [cday, -m30, -m31_]. % 30
+['triceto'] :: [cday, -m30, -m31_]. % 30
+['jedynatricteho'] :: [cday, -m31_]. % 31
+['jedynatriceteho'] :: [cday, -m31_]. % 31
+['jedynatricto'] :: [cday, -m31_]. % 31
+['jedynatriceto'] :: [cday, -m31_]. % 31
+
+['prenjeje'] :: [cday, -f]. % 1
+['druheje'] :: [cday, -f]. % 2
+['treceje'] :: [cday, -f]. % 3
+['stworteje'] :: [cday, -f]. % 4
+['pjateje'] :: [cday, -f]. % 5
+['sesteje'] :: [cday, -f]. % 6
+['sedmeje'] :: [cday, -f]. % 7
+['wosmeje'] :: [cday, -f]. % 8
+['dzewjateje'] :: [cday, -f]. % 9
+['dzesateje'] :: [cday, -f]. % 10
+['jednateje'] :: [cday, -f]. % 11
+['dwanateje'] :: [cday, -f]. % 12
+['trinateje'] :: [cday, -f]. % 13
+['styrnateje'] :: [cday, -f]. % 14
+['pjatnateje'] :: [cday, -f]. % 15
+['sesnateje'] :: [cday, -f]. % 16
+['sydomnateje'] :: [cday, -f]. % 17
+['wosomnateje'] :: [cday, -f]. % 18
+['dzewjatnateje'] :: [cday, -f]. % 19
+['dwacteje'] :: [cday, -f]. % 20
+['dwaceteje'] :: [cday, -f]. % 20
+['jenadwacteje'] :: [cday, -f]. % 21
+['jedynadwacteje'] :: [cday, -f]. % 21
+['jenadwaceteje'] :: [cday, -f]. % 21
+['jedynadwaceteje'] :: [cday, -f]. % 21
+['dwajadwacteje'] :: [cday, -f]. % 22
+['dwajadwaceteje'] :: [cday, -f]. % 22
+['triadwacteje'] :: [cday, -f]. % 23
+['triadwaceteje'] :: [cday, -f]. % 23
+['styriadwacteje'] :: [cday, -f]. % 24
+['sytriadwaceteje'] :: [cday, -f]. % 24
+['pjecadwacteje'] :: [cday, -f]. % 25
+['pjecadwaceteje'] :: [cday, -f]. % 25
+['sescadwacteje'] :: [cday, -f]. % 26
+['sescadwaceteje'] :: [cday, -f]. % 26
+['sydomadwacteje'] :: [cday, -f]. % 27
+['sydomadwaceteje'] :: [cday, -f]. % 27
+['wosomadwacteje'] :: [cday, -f]. % 28
+['wosomadwaceteje'] :: [cday, -f]. % 28
+['dzewjecadwacteje'] :: [cday, -f]. % 29
+['dzewjecadwaceteje'] :: [cday, -f]. % 29
+['tricteje'] :: [cday, -f]. % 30
+['triceteje'] :: [cday, -f]. % 30
+['jedynatricteje'] :: [cday, -f]. % 31
+['jedynatriceteje'] :: [cday, -f]. % 31
+
+[e18] :: [=cday, +m29, cday]. % hA.A
+[e19] :: [=cday, +m29, +m30, +m31_, cday, -m29]. % hA.A
+[e20] :: [=cday, +m30, cday]. % hA.A
+[e21] :: [=cday, +m30, +m31_, cday, -m30]. % hA.A
+[e22] :: [=cday, +m31_, cday, -m31]. % hA.A
+
+[e23] :: [=cmon, cHsbDateG]. % hA.Date(A)
+
+['jednej'] :: [=c5, +w, =cdt, +jed, c6]. % hA.A+60 eins
+['dwemaj'] :: [=c5, +w, =cdt, +jed, c6]. % hA.A+120 zwei
+['troch'] :: [=c5, +w, =cdt, +tro, c6]. % hA.A+180 drei
+['styrjoch'] :: [=c5, +w, =cdt, +sty, c6]. % hA.A+240 vier
+['pjecich'] :: [=c5, +w, =cdt, +pje, c6]. % hA.A+300 fünf
+['sescich'] :: [=c5, +w, =cdt, +ses, c6]. % hA.A-360 sechs
+['sedmich'] :: [=c5, +w, =cdt, +ses, c6]. % hA.A-300 sieben
+['wosmich'] :: [=c5, +we, =cdt, +ses, c6]. % hA.A-240 acht
+['dzewjecich'] :: [=c5, +w, =cdt, +dzw, c6]. % hA.A-180 neun
+['dzesacich'] :: [=c5, +w, =cdt, +dzs, c6]. % hA.A-120 zehn
+['jednacich'] :: [=c5, +w, =cdt, +jec, c6]. % hA.A-60 elf
+['dwanacich'] :: [=c5, +w, =cdt, +jed, c6]. % hA.A zwölf
+
+['w'] :: [=cnix, =c4, c5, -w]. % hAhB.A+B um
+['we'] :: [=cnix, =c4, c5,-we]. % hAhB.A+B um
+[e24] :: [=c3, c5, -w]. % hA.A
+[e25] :: [=c3, c5, -we]. % hA.A
+
+[e26] :: [c4]. % 0
+['w napol'] :: [c4]. % -30 um halb
+['napol'] :: [=cnix, =c2, c4]. % hAhB.A+B-30 halb
+
+['pjec do'] :: [=cnix, =c1, c2]. % hAhB.A+B-5 fünf vor
+['pjec po'] :: [=cnix, =c1, c2]. % hAhB.A+B+5 fünf nach
+['dzesac do'] :: [=cnix, =c1, c2]. % hAhB.A+B-10 zehn vor
+['dzesac po'] :: [=cnix, =c1, c2]. % hAhB.A+B+10 zehn nach
+[e27] :: [=c1, c2].
+
+['krotko do'] :: [c1]. % -2 kurz vor
+['krotko po'] :: [c1]. % 2 kurz nach
+[e28] :: [c1]. % 0
+
+[e29] :: [=c2, c3]. % hA.A
+['napol'] :: [=cnix, =c2, c3]. % hAhB.A+B-30 halb
+['w napol'] :: [c3]. % -30 um halb
+['stworc na'] :: [=cnix, =c1, c3]. % hAhB.A+B-45 viertel
+['tristworc na'] :: [=cnix, =c1, c3]. % hAhB.A+B-15 dreiviertel
+['betlk na'] :: [=cnix, =c1, c3]. % hAhB.A+B-45 viertel
+['tri betlki na'] :: [=cnix, =c1, c3]. % hAhB.A+B-15 dreiviertel
+['bertlk na'] :: [=cnix, =c1, c3]. % hAhB.A+B-45 viertel
+['tri bertlki na'] :: [=cnix, =c1, c3]. % hAhB.A+B-15 dreiviertel
+
+['pripoldnju'] :: [=cnix, =cw, cdt, -jed]. % hAhB.A+B+720 mittag
+[e30] :: [cdt, -jed]. % 720 mittags (nicht erwähnt)
+['nocy'] :: [=cnix, =cw, cdt, -tro, -sty, -pje, -jed, -jec, -dzs, -dzw]. % hAhB.A+B nachts
+[e31] :: [cdt, -tro, -sty, -pje, -jed, -jec, -dzs, -dzw]. % 0 nachts (nicht erwähnt)
+['popoldnju'] :: [=cnix, =cw, cdt, -tro, -sty, -pje]. % hAhB.A+B+720 nachmittag
+[e32] :: [cdt, -tro, -sty, -pje]. % 720 nachmittag unerwähnt
+['rano'] :: [=cnix, =cw, cdt, -sty, -pje]. % hAhB.A+B morgens (vor dem semantischen Umbruch modulo 24)
+[e33] :: [cdt, -sty, -pje]. % 0 unerwähnt
+['rano'] :: [=cnix, =cw, cdt, -ses, -dzw]. % hAhB.A+B+720 morgens nach modulo-24-umbruch
+[e34] :: [cdt, -ses, -dzw]. % 720 unerwähnt
+['nawjeCor'] :: [=cnix, =cw, cdt, -pje]. % hAhB.A+B+720 vorabends
+[e35] :: [cdt, -pje]. % hA.A+720 unerwähnt
+['wjeCor'] :: [=cnix, =cwe, cdt, -ses, -dzw]. % hAhB.A+B abends
+[e36] :: [cdt, -ses, -dzw]. % 0 unerwähnt
+['dopoldnju'] :: [=cnix, =cw, cdt, -jec, -dzs, -dzw]. % hAhB.A+B+720 vormittags
+[e37] :: [cdt, -jec, -dzs, -dzw]. % 720 unerwähnt
+[e38] :: [=cdt, +tro, cdt]. % hA.A
+[e39] :: [=cdt, +tro, +sty, +pje, +jed, +jec, +dzs, +dzw, cdt, -tro]. % hA.A
+[e40] :: [=cdt, +tro, +sty, +pje, cdt, -tro]. % hA.A
+[e41] :: [=cdt, +sty, cdt]. % hA.A
+[e42] :: [=cdt, +sty, +pje, +jed, +jec, +dzs, +dzw, cdt, -sty]. % hA.A
+[e43] :: [=cdt, +sty, +pje, cdt, -sty]. % hA.A
+[e44] :: [=cdt, +pje, cdt]. % hA.A
+[e45] :: [=cdt, +pje, +jed, +jec, +dzs, +dzw, cdt, -pje]. % hA.A
+[e46] :: [=cdt, +pje, cdt, -pje]. % hA.A
+[e47] :: [=cdt, +jed, cdt]. % hA.A
+[e48] :: [=cdt, +jed, +jec, +dzs, +dzw, cdt, -jed]. % hA.A
+[e49] :: [=cdt, +jec, cdt]. % hA.A
+[e50] :: [=cdt, +jec, +dzs, +dzw, cdt, -jec]. % hA.A
+[e51] :: [=cdt, +dzs, cdt]. % hA.A
+[e52] :: [=cdt, +dzs, +dzw, cdt, -dzs]. % hA.A
+[e53] :: [=cdt, +dzw, cdt]. % hA.A
+[e54] :: [=cdt, +dzw, cdt, -dzw]. % hA.A
+[e55] :: [=cdt, +ses, cdt]. % hA.A
+[e56] :: [=cdt, +ses, +dzw, cdt, -ses]. % hA.A
+
+['w'] :: [cw]. % 0 um
+[e57] :: [cw]. % 0
+['we'] :: [cwe]. % 0 um
+[e58] :: [cwe]. % 0
+
+[e59] :: [cnix]. % 0
+
+
+['hodzin'] :: [=cmin2, =chour2, c6]. % hAhB.A+60*B ':'(Uhr)
+
+[e60] :: [cmin2]. % 0
+[e61] :: [=cmin1, cmin2]. % hA.A
+['dzesac'] :: [cmin2]. % 10
+['jednace'] :: [cmin2]. % 11
+['dwanace'] :: [cmin2]. % 12
+['nace'] :: [=cmin1, +na, cmin2]. % hA.A+10
+['styrnace'] :: [cmin2]. % 14
+['pjatnace'] :: [cmin2]. % 15
+['sesnace'] :: [cmin2]. % 16
+['dzewjatnace'] :: [cmin2]. % 19
+['dwaceci'] :: [cmin2]. % 20
+['adwaceci'] :: [=cnix, =cmin1, cmin2]. % hAhB.A+B+20
+['triceci'] :: [cmin2]. % 30
+['atriceci'] :: [=cnix, =cmin1, cmin2]. % hAhB.A+B+30
+['styrceci'] :: [cmin2]. % 40
+['astyrceci'] :: [=cnix, =cmin1, cmin2]. % hAhB.A+B+40
+['pjecdzesat'] :: [cmin2]. % 50
+['apjecdzesat'] :: [=cnix, =cmin1, cmin2]. % hAhB.A+B+50
+['polsta'] :: [cmin2]. % 50
+['apolsta'] :: [=cnix, =cmin1, cmin2]. % hAhB.A+B+50
+
+['jedyn'] :: [cmin1]. % 1
+['dwaj'] :: [cmin1]. % 2
+['tri'] :: [cmin1, -na]. % 3
+['styri'] :: [cmin1]. % 4
+['pjec'] :: [cmin1]. % 5
+['sesc'] :: [cmin1]. % 6
+['sydom'] :: [cmin1, -na]. % 7
+['wosom'] :: [cmin1, -na]. % 8
+['dzewjec'] :: [cmin1]. % 9
+[e62] :: [=cmin1, +na, cmin1]. % hA.A
+
+['nul'] :: [chour2]. % 0
+[e63] :: [=chour1, chour2]. % hA.A
+['styri'] :: [chour2]. % 4
+['pjec'] :: [chour2]. % 5
+['sesc'] :: [chour2]. % 6
+['dzewjec'] :: [chour2]. % 9
+['dzesac'] :: [chour2]. % 10
+['jednace'] :: [chour2]. % 11
+['dwanace'] :: [chour2]. % 12
+['nace'] :: [=chour1, +na, chour2]. % A+10
+['styrnace'] :: [chour2]. % 14
+['pjatnace'] :: [chour2]. % 15
+['sesnace'] :: [chour2]. % 16
+['dzewjatnace'] :: [chour2]. % 19
+['dwaceci'] :: [chour2]. % 20
+['adwaceci'] :: [=chour1, +dw, chour2]. % A+20
+
+['jedyn'] :: [chour1, -dw]. % 1
+['dwaj'] :: [chour1, -dw]. % 2
+['tri'] :: [chour1, -dw, -na]. % 3
+['sydom'] :: [chour1, -na]. % 7
+['wosom'] :: [chour1, -na]. % 8
+[e64] :: [=chour1, +dw, chour1]. % hA.A
+[e65] :: [=chour1, +dw, +na, chour1, -na]. % hA.A
+[e66] :: [=chour1, +na, chour1]. % hA.A
+
+[e67] :: [=c6, cHsbClock]. % hA.A
+
+['pondzelu'] :: [cday]. % 1
+['wutoru'] :: [cday]. % 2
+['srjedu'] :: [cday]. % 3
+['stwortk'] :: [cday]. % 4
+['pjatk'] :: [cday]. % 5
+['sobotu'] :: [cday]. % 6
+['njedzelu'] :: [cday]. % 7
+[e68] :: [=cday, cHsbWDay]. % hA.weekday(A)
