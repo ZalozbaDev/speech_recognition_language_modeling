@@ -1,4 +1,4 @@
-0 3 přenja +1
+0 3 prěnja +1
 0 3 druha +2
 0 3 třeća +3
 0 3 štwórta +4

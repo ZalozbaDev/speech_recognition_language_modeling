@@ -1,4 +1,4 @@
-0 3 přeni +1
+0 3 prěni +1
 0 3 druhi +2
 0 3 třeći +3
 0 3 štwórty +4

@@ -1,4 +1,4 @@
-0 3 přenjeje +1
+0 3 prěnjeje +1
 0 3 druheje +2
 0 3 třećeje +3
 0 3 štwórteje +4
