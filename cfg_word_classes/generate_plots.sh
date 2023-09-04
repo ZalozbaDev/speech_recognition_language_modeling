@@ -111,7 +111,11 @@ add_to_isyms "CLOCKMODWE	1000"
 add_to_isyms "CLOCKMODW	1001"
 add_to_isyms "NUM1-59	1002"
 add_to_isyms "NUM0-23HODZIN	1003"
+add_to_isyms "CLOCKUNTYPICAL	1004"
 plot_fst "clock"
+
+generate_isyms
+plot_fst "CLOCKUNTYPICAL"
 
 ##########################################################################
 ## DATES

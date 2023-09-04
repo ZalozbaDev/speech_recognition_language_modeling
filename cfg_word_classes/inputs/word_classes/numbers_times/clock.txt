@@ -75,4 +75,5 @@
 0 4 NUM0-23hodzin <eps>
 4 6 NUM1-59 <eps>
 4 6 <eps> +0
+0 6 CLOCKUNTYPICAL <eps>
 6
