@@ -24,5 +24,4 @@
 0 1 třiadwaceći +1380
 1 2 hodźin +0
 1 2 hodźinach +0
-1 2 <eps> +0
 2

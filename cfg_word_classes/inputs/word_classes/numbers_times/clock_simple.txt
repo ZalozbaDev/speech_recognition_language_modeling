@@ -1,5 +1,13 @@
-0 1 NUM0-23hodzin <eps>
-0 2 CLOCKUNTYPICAL <eps>
-1 2 NUM1-59 <eps>
-1 2 <eps> +0
-2
+0 5 CLOCKUNTYPICAL <eps>
+0 1 NUM0-23clock <eps>
+1 4 hodźin +0
+1 4 hodźinach +0
+0 2 we +0
+0 2 w +0
+2 3 NUM0-23clock <eps>
+3 4 hodźin +0
+3 4 hodźinach +0
+3 4 <eps> +0
+4 5 <eps> +0
+4 5 NUM1-59 <eps>
+5
