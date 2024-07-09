@@ -1,6 +1,7 @@
 0 9 <eps> +(
 9 1 NUM(1-9)00 <eps>
 1 2 a <eps>
+1 2 <eps> <eps>
 9 2 <eps> +0
 9 3 <eps> +1
 2 3 jedyn +1
