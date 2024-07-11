@@ -1,0 +1,11 @@
+0 1 NUM1-10^6 <eps>
+1 2 euro <eps>
+1 2 eurow <eps>
+2 5 <eps> <eps>
+2 3 a +(
+2 3 <eps> +(
+3 4 NUM1-99 <eps>
+4 5 centow )/100
+4 5 cent )/100
+4 5 <eps> )/100
+5

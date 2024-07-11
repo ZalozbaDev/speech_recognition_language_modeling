@@ -24,8 +24,14 @@
 1 4 nać +0
 1 4 naćich +0
 0 3 dwa +1200
-0 3 jedynadwa +1260
-0 3 dwajadw +1320
-0 3 třiadwa +1380
+0 31 jedyn +1260
+31 311 a <eps>
+311 3 dwa <eps>
+0 32 dwaj +1320
+32 321 a <eps>
+321 3 dwa <eps>
+0 33 tři +1380
+33 331 a <eps>
+331 3 dwa <eps>
 3 4 ceći +0
 4

@@ -1,6 +1,7 @@
 0 1 <eps> -(
 1 2 NUM1-19 <eps>
 1 2 krótko +2
-1 2 dwaceći +20
+1 21 dwa +20
+21 2 ceći <eps>
 2 3 do )
 3
