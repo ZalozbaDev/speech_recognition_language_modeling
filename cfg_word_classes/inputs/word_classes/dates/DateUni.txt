@@ -1,7 +1,9 @@
-0 2 DateDat <eps>
+0 1 DateDat <eps>
 0 2 DateNom <eps>
-2 3 do <->
-3 4 DateDat <eps>
-3 4 DateNom <eps>
-2 4 <eps> <eps>
-4
+1 3 do <->
+2 4 do <->
+4 5 DateNom <eps>
+3 5 DateDat <eps>
+1 5 <eps> +0
+2 5 <eps> +0
+5

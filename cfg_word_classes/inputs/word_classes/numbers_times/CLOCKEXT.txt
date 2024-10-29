@@ -7,9 +7,9 @@
 1 2 <eps> <eps>
 1 33 <eps> +720
 
-1 2 nocy +0
-1 2 rano +0
-1 33 rano +0
+1 2 nocy <eps>
+1 2 rano <eps>
+1 33 rano <eps>
 1 2 dopołdnju +0
 1 2 připołdnju +0
 1 33 dopołdnju +720
