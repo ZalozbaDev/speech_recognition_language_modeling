@@ -9,5 +9,5 @@
 1 2 sydom +1020
 1 2 wosom +1080
 1 2 dźewjat +1140
-2 3 naćich 0
+2 3 naćich +0
 3
